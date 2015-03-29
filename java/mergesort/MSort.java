@@ -49,16 +49,60 @@ class Merge <T extends Comparable<T>> {
 	}
 
 	public void mergesort() {
-    	int n = this.array.length;
+    	int n = input.length;
     	if(n <= 1) {
     	    return this.array;
     	}
-    	T[] firstHalf = Utility.slice(this.array, 0, n/2);
-    	T[] secondHalf = Utility.slice(this.array, n/2, n);
-    	return Utility.merge(
+    	T[] firstHalf = slice(input, 0, n/2);
+    	T[] secondHalf = slice(input, n/2, n);
+    	return merge(
         	new Mergesort(firstHalf).sorted(),
         	new Mergesort(secondHalf).sorted()
         );
+	}
+
+	public T[] merge(T[] arr1, T[] arr2) {
+		T[] result = new T[arr1.length + arr2.length];
+		int p1 = 0;
+		int p2 = 0;
+		int q  = 0;
+		while(p1 < arr1.length || p2 < arr2.length) {
+			if(p1 < arr1.length && p2 < arr2.length) {
+				int compare = arr1[p1].compareTo(arr2[p2]);
+				if(compare <= 0) {
+					result[q] = arr1[p1];
+					p1 ++; q ++;
+				} else if(compare > 0) {
+					result[q] = arr2[p2];
+					p2 ++; q ++;
+				}
+			} else {
+				if(p1 == arr1.length) {
+					copy(arr2, p2, arr2.length, result, q);
+				} else {
+					copy(arr1, p1, arr1.length, result, q);
+				}
+				break;
+			}
+		}
+    	return result;
+	}
+
+	public T[] slice(T[] array, int a, int b) throws Exception {
+		T[] newarray = new T[b-a];
+		if(! (a < array.length && b <= array.length)) {
+			throw new Exception("out of bound:" + a + "," + b);
+		}
+		for(int i=a; i < b; i++) {
+			newarray[i-a] = array[i];
+		}
+    	return newarray;
+	}
+
+	public void copy(T[] src, int a, int b, T[] target, int start) {
+		for(int i=0; i < b-a; i++) {
+			target[start+i] = src[a+i];
+		}
 	}
 
 	public void print(T[] sorted) {
