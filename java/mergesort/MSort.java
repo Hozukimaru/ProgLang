@@ -44,6 +44,7 @@ class Merge <T extends Comparable<T>> {
 	}
 
 	public void sort() {
+		System.out.println("asd");
 		Object[] sorted = mergesort(input);
 		print(sorted);
 	}

@@ -16,7 +16,7 @@ public class Main {
 			sorter.sortInit(varType,order);
 		} else if(sortType.equals("merge")) {
 			mergesort.MSort sorter = new mergesort.MSort();
-			sorter.sortInit(sortType,order);
+			sorter.sortInit(varType,order);
 		}
 	}
 }

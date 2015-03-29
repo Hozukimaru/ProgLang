@@ -5,4 +5,4 @@ clean:
 
 run:
 	scalac Main.scala */*.scala
-	scala Main bubble int ascending
+	scala Main quick int ascending
