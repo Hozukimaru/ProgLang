@@ -44,35 +44,31 @@ class Merge <T extends Comparable<T>> {
 	}
 
 	public void sort() {
-		mergesort(input);
-		print(input);
+		Object[] sorted = mergesort(input);
+		print(sorted);
 	}
 
-	public void mergesort() {
+	public Object[] mergesort(T[] input) {
     	int n = input.length;
     	if(n <= 1) {
-    	    return this.array;
+    	    return input;
     	}
-    	T[] firstHalf = slice(input, 0, n/2);
-    	T[] secondHalf = slice(input, n/2, n);
-    	return merge(
-        	new Mergesort(firstHalf).sorted(),
-        	new Mergesort(secondHalf).sorted()
-        );
+    	Object[] firstHalf = slice(input, 0, n/2);
+    	Object[] secondHalf = slice(input, n/2, n);
+    	return merge(firstHalf,secondHalf);
 	}
 
-	public T[] merge(T[] arr1, T[] arr2) {
-		T[] result = new T[arr1.length + arr2.length];
+	public Object[] merge(Object[] arr1, Object[] arr2) {
+		Object[] result = new Object[arr1.length + arr2.length];
 		int p1 = 0;
 		int p2 = 0;
 		int q  = 0;
 		while(p1 < arr1.length || p2 < arr2.length) {
 			if(p1 < arr1.length && p2 < arr2.length) {
-				int compare = arr1[p1].compareTo(arr2[p2]);
-				if(compare <= 0) {
+				if(compare((T)arr1[p1],(T)arr2[p2]) <= 0) {
 					result[q] = arr1[p1];
 					p1 ++; q ++;
-				} else if(compare > 0) {
+				} else if(compare((T)arr1[p1],(T)arr2[p2]) > 0) {
 					result[q] = arr2[p2];
 					p2 ++; q ++;
 				}
@@ -88,24 +84,24 @@ class Merge <T extends Comparable<T>> {
     	return result;
 	}
 
-	public T[] slice(T[] array, int a, int b) throws Exception {
-		T[] newarray = new T[b-a];
+	public Object[] slice(T[] array, int a, int b) throws Exception {
+		Object[] tempArray = new Object[b-a];
 		if(! (a < array.length && b <= array.length)) {
 			throw new Exception("out of bound:" + a + "," + b);
 		}
 		for(int i=a; i < b; i++) {
-			newarray[i-a] = array[i];
+			tempArray[i-a] = array[i];
 		}
-    	return newarray;
+    	return tempArray;
 	}
 
-	public void copy(T[] src, int a, int b, T[] target, int start) {
+	public void copy(Object[] src, int a, int b, Object[] target, int start) {
 		for(int i=0; i < b-a; i++) {
 			target[start+i] = src[a+i];
 		}
 	}
 
-	public void print(T[] sorted) {
+	public void print(Object[] sorted) {
 		for (int i=0;i<sorted.length;i++) {
 			System.out.println(sorted[i]);
 		}

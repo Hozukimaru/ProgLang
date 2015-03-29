@@ -1,6 +1,7 @@
 clean:
 	rm bubblesort/*.class
-	rm Main.class
+	rm quicksort/*.class
+	rm *.class
 
 run:
 	scalac Main.scala */*.scala
