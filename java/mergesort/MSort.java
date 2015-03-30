@@ -37,69 +37,53 @@ public class MSort {
 class Merge <T extends Comparable<T>> {
 	private T[] input;
 	private String order;
+	private Object[] tempArr;
 
 	public Merge(T[] input,String order) {
 		this.input = input;
+		tempArr = new Object[input.length];
 		this.order = order;
 	}
 
 	public void sort() {
-		System.out.println("asd");
-		Object[] sorted = mergesort(input);
-		print(sorted);
+		//print(input);
+		mergesort(0,input.length-1);
+		print(input);
 	}
 
-	public Object[] mergesort(T[] input) {
-    	int n = input.length;
-    	if(n <= 1) {
-    	    return input;
-    	}
-    	Object[] firstHalf = slice(input, 0, n/2);
-    	Object[] secondHalf = slice(input, n/2, n);
-    	return merge(firstHalf,secondHalf);
+	public void mergesort(int start,int end) {
+		if (start < end) {
+			int mid = start + (end - start ) / 2;
+			mergesort(start,mid);
+			mergesort(mid+1,start);
+			mergeroni(start,mid,end);
+		}
 	}
 
-	public Object[] merge(Object[] arr1, Object[] arr2) {
-		Object[] result = new Object[arr1.length + arr2.length];
-		int p1 = 0;
-		int p2 = 0;
-		int q  = 0;
-		while(p1 < arr1.length || p2 < arr2.length) {
-			if(p1 < arr1.length && p2 < arr2.length) {
-				if(compare((T)arr1[p1],(T)arr2[p2]) <= 0) {
-					result[q] = arr1[p1];
-					p1 ++; q ++;
-				} else if(compare((T)arr1[p1],(T)arr2[p2]) > 0) {
-					result[q] = arr2[p2];
-					p2 ++; q ++;
-				}
+	public void mergeroni(int start,int mid, int end) {
+		for (int i=start;i<=end ;i++ ) {
+			tempArr[i] = input[i];
+		}
+		int a = start;
+		int b = mid+1;
+		int c = start;
+		while(a <= mid && b <= end) {
+			if (compare((T)tempArr[a],(T)tempArr[b]) <= 0) {
+				input[a++] = (T)tempArr[a++];
 			} else {
-				if(p1 == arr1.length) {
-					copy(arr2, p2, arr2.length, result, q);
-				} else {
-					copy(arr1, p1, arr1.length, result, q);
-				}
-				break;
+				input[c++] = (T)tempArr[b++];
 			}
 		}
-    	return result;
+
+		while(a <= mid) {
+			input[c++] = (T)tempArr[a++];
+		}
 	}
 
-	public Object[] slice(T[] array, int a, int b) throws Exception {
-		Object[] tempArray = new Object[b-a];
-		if(! (a < array.length && b <= array.length)) {
-			throw new Exception("out of bound:" + a + "," + b);
-		}
-		for(int i=a; i < b; i++) {
-			tempArray[i-a] = array[i];
-		}
-    	return tempArray;
-	}
-
-	public void copy(Object[] src, int a, int b, Object[] target, int start) {
-		for(int i=0; i < b-a; i++) {
-			target[start+i] = src[a+i];
-		}
+	public void swap(int a,int b) {
+		T temp = input[a];
+		input[a] = input[b];
+		input[b] = temp;
 	}
 
 	public void print(Object[] sorted) {
@@ -110,10 +94,10 @@ class Merge <T extends Comparable<T>> {
 
 	public int compare(T a,T b) {
 		if (order.equals("ascending")) {
-			return -(a.compareTo(b));
+			return a.compareTo(b);
 		}
 		else {
-			return a.compareTo(b);
+			return -(a.compareTo(b));
 		}
 	}
 }
