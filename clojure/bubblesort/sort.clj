@@ -1,27 +1,22 @@
-(ns bubblesort
-  (:import java.util.ArrayList))
+(ns clojure.bubbleSort.Sort (:import java.util.ArrayList))
  
-(defn bubble-sort
-  "Sort in-place.
-  arr must implement the Java List interface and should support
-  random access, e.g. an ArrayList."
-  ([arr] (bubble-sort compare arr))
-  ([cmp arr]
-     (letfn [(swap! [i j]
-                    (let [t (.get arr i)]
-                      (doto arr
-                        (.set i (.get arr j))
-                        (.set j t))))
-             (sorter [stop-i]
-                     (let [changed (atom false)]
-                       (doseq [i (range stop-i)]
-                         (if (pos? (cmp (.get arr i) (.get arr (inc i))))
-                           (do
-                             (swap! i (inc i))
-                             (reset! changed true))))
-                       @changed))]
-       (doseq [stop-i (range (dec (.size arr)) -1 -1)
-               :while (sorter stop-i)])
-       arr)))
- 
-(println (bubble-sort (ArrayList. [10 9 8 7 6 5 4 3 2 1])))
+(defn bubbleSort
+  ([inputArray] (bubbleSort compare inputArray))
+  ([cmp inputArray]
+    (letfn [(swap! [i j]
+        (let [temp (.get inputArray i)]
+            (doto inputArray
+                (.set i (.get inputArray j))
+                    (.set j temp))))
+                        (sorter [stop-i]
+                        (let [changeOccurred (atom false)]
+                                (doseq [i (range stop-i)]
+                                (if (pos? (cmp (.get inputArray i) (.get inputArray (inc i))))
+                                (do
+                                    (swap! i (inc i))
+                                    (reset! changeOccurred true))))
+                                    @changeOccurred))]
+        (doseq [stop-i (range (dec (.size inputArray)) -1 -1)
+        :while (sorter stop-i)])
+    inputArray)))
+(println (bubbleSort (ArrayList. [10 9 8 7 6 5 4 3 2 1])))
