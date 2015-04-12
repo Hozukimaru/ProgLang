@@ -21,6 +21,7 @@
         :while (sorter stop-i)])
     inputArray)))
 
+;compares array values then merges them in order
 (defn merge* [firstHalf secondHalf]
   	(cond (nil? firstHalf) secondHalf
         (nil? secondHalf) firstHalf
@@ -29,6 +30,7 @@
                	(if (>= 0 (compare fh sh)) (cons fh (merge* *firstHalf secondHalf))
                     (cons sh (merge* firstHalf *secondHalf))))))
  
+;splits array and calls merge on both halves of the array
 (defn mergeSort [inputArray]
 	(let [[fh & *inputArray] inputArray]
 		(if (nil? *inputArray) 
@@ -36,7 +38,8 @@
       		(let [[firstHalf secondHalf] (split-at (/ (count inputArray) 2) inputArray)]
         	(merge* (mergeSort firstHalf) (mergeSort secondHalf))))))
 
-
+;compare the pivot to y and call quicksort on each half of the array
+;with the pivot as the dividing point
 (defn quickSort [inputArray]
 	(if (empty? inputArray) 
 		'()
@@ -45,6 +48,7 @@
 			(list pivot)
 			(quickSort (for [y sortedArray :when (<= 0 (compare y pivot))] y))))))
 
+;create array of letters randomly selected from the characters string
 (def characters "abcdefghijklmnopqrstuvwxyz")
 (defn makeStringArray [length]
 	(apply str (repeatedly length #(rand-nth characters))))
